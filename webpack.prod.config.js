@@ -5,23 +5,15 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   context: resolve(__dirname, 'src'),
-  entry: ['webpack-dev-server/client?http://localhost:8080', 'webpack/hot/only-dev-server', './index.tsx'],
+  entry: './index.tsx',
   output: {
     filename: 'bundle.js',
     path: resolve(__dirname, 'public'),
-    publicPath: '/',
   },
-  devtool: 'inline-source-map',
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
-  },
-  devServer: {
-    port: '8080',
-    hot: true,
-    contentBase: resolve(__dirname, 'src'),
-    publicPath: '/',
   },
   module: {
     rules: [
@@ -34,10 +26,8 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
-    new HtmlWebpackPlugin({
+    new HtmlWebpackPlugin({ template: resolve(__dirname, 'src/index.html') }),
+    new webpack.DefinePlugin({
       template: resolve(__dirname, 'src/index.html'),
       favicon: resolve(__dirname, 'public/react.ico'),
     }),

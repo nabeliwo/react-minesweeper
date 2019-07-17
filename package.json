@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",
+    "build": "webpack --config webpack.prod.config.js",
     "lint:ts": "eslint 'src/**/*.ts{,x}'",
     "lint:style": "stylelint 'src/**/*.ts{,x}'",
     "lint": "run-p lint:*",
