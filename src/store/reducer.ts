@@ -1,14 +1,18 @@
 import { combineReducers } from 'redux'
 
-import { Setting } from '../modules/setting/settingDomain'
-import { settingReducer } from '../modules/setting/settingReducer'
+import { SettingForm } from '../modules/settingForm/settingFormDomain'
+import { settingFormReducer } from '../modules/settingForm/settingFormReducer'
+import { Game } from '../modules/game/gameDomain'
+import { gameReducer } from '../modules/game/gameReducer'
 
 export interface State {
-  setting: Setting
+  settingForm: SettingForm
+  game: Game
 }
 
 export function createRootReducer() {
   return combineReducers({
-    setting: settingReducer,
+    settingForm: settingFormReducer,
+    game: gameReducer,
   })
 }

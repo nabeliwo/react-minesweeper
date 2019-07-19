@@ -2,34 +2,54 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 
 import { State } from '../store/reducer'
-import { SettingKey, Setting } from '../modules/setting/settingDomain'
-import { Actions, changeSetting } from '../modules/setting/settingAction'
+import { SettingKey, SettingForm } from '../modules/settingForm/settingFormDomain'
+import {
+  Actions as SettingActions,
+  changeSettingFormValue,
+  setSettingFormError,
+  resetSettingFormError,
+} from '../modules/settingForm/settingFormAction'
+import { Actions as GameActions, updateGameSetting } from '../modules/game/gameAction'
 
 import { Config as ConfigComponent } from '../components/Config'
+import { settingFormValidator } from '../modules/settingForm/settingFormValidator'
 
 interface StateProps {
-  setting: State['setting']
+  settingForm: State['settingForm']
 }
 
 interface DispatchProps {
-  changeSetting: (key: SettingKey, value: number) => void
-  saveSetting: (setting: Setting) => void
+  handleChange: (key: SettingKey, value: string) => void
+  handleSubmit: (value: SettingForm['value']) => void
 }
 
 export type ConfigProps = StateProps & DispatchProps
 
-const mapStateToProps = (state: State) => ({
-  setting: state.setting,
+const mapStateToProps = (state: State): StateProps => ({
+  settingForm: state.settingForm,
 })
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  changeSetting: (key: SettingKey, value: number) => {
-    dispatch(changeSetting(key, value))
+const mapDispatchToProps = (dispatch: Dispatch<SettingActions | GameActions>): DispatchProps => ({
+  handleChange: (key, value) => {
+    dispatch(changeSettingFormValue(key, value))
   },
 
-  saveSetting: (setting: Setting) => {
-    // TODO: Restart game
-    console.log(setting)
+  handleSubmit: value => {
+    const { valid, errors } = settingFormValidator(value)
+
+    if (!valid) {
+      dispatch(setSettingFormError(errors))
+      return
+    }
+
+    dispatch(resetSettingFormError())
+    dispatch(
+      updateGameSetting({
+        rows: Number(value.rows),
+        cols: Number(value.cols),
+        bombs: Number(value.bombs),
+      }),
+    )
   },
 })
 
