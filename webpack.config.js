@@ -10,7 +10,7 @@ module.exports = {
   entry: ['webpack-dev-server/client?http://localhost:8080', 'webpack/hot/only-dev-server', './index.tsx'],
   output: {
     filename: 'bundle.js',
-    path: resolve(__dirname, 'public'),
+    path: resolve(__dirname, 'docs'),
     publicPath: '/',
   },
   devtool: 'inline-source-map',
@@ -39,7 +39,7 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       template: resolve(__dirname, 'src/index.html'),
-      favicon: resolve(__dirname, 'public/react.ico'),
+      favicon: resolve(__dirname, 'docs/react.ico'),
     }),
   ],
 }

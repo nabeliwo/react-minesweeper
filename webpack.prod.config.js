@@ -10,7 +10,7 @@ module.exports = {
   entry: './index.tsx',
   output: {
     filename: 'bundle.js',
-    path: resolve(__dirname, 'public'),
+    path: resolve(__dirname, 'docs'),
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
@@ -29,7 +29,7 @@ module.exports = {
     new HtmlWebpackPlugin({ template: resolve(__dirname, 'src/index.html') }),
     new webpack.DefinePlugin({
       template: resolve(__dirname, 'src/index.html'),
-      favicon: resolve(__dirname, 'public/react.ico'),
+      favicon: resolve(__dirname, 'docs/react.ico'),
     }),
   ],
 }
