@@ -3,9 +3,11 @@ import styled from 'styled-components'
 
 import { GameProps } from '../containers/Game'
 
-export const Game: React.FC<GameProps> = ({ game }) => {
+export const Game: React.FC<GameProps> = ({ game, handleClickCell }) => {
   const rowArray = new Array(game.rows).fill(null)
   const colArray = new Array(game.cols).fill(null)
+
+  const onClickCell = React.useCallback(() => handleClickCell(game.startTime), [game.startTime, handleClickCell])
 
   return (
     <Wrapper>
@@ -15,7 +17,7 @@ export const Game: React.FC<GameProps> = ({ game }) => {
         {rowArray.map((_, i) => (
           <div key={i}>
             {colArray.map((__, j) => (
-              <Column key={j} />
+              <Column key={j} onClick={onClickCell} />
             ))}
           </div>
         ))}
@@ -33,7 +35,7 @@ export const Game: React.FC<GameProps> = ({ game }) => {
           <Text>moves</Text>
         </SettingColumn>
         <SettingColumn>
-          <Text>hoge</Text>
+          <Text>{game.elapsedCount}</Text>
           <Text>time</Text>
         </SettingColumn>
       </Setting>
@@ -57,6 +59,7 @@ const Column = styled.button`
   height: 20px;
   margin: 5px;
   padding: 0;
+  border: none;
   background-color: #f4f4f4;
   cursor: pointer;
 `
