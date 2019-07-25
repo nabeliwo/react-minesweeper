@@ -2,6 +2,8 @@
 
 minesweeper built with React.
 
+https://nabeliwo.github.io/react-minesweeper/
+
 ## tasks
 
 ### start
