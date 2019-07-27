@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 
 import { State } from '../store/reducer'
-import { Actions, startGame, setCount } from '../modules/game/gameAction'
+import { Actions, startGame, setCount, resetGame } from '../modules/game/gameAction'
 import { Game as IGame, getElapsedCount } from '../modules/game/gameDomain'
 
 import { Game as GameComponent } from '../components/Game'
@@ -12,8 +12,8 @@ interface StateProps {
 }
 
 interface DispatchProps {
+  handleClickReset: (startTime: IGame['startTime']) => void
   handleClickCell: (startTime: IGame['startTime']) => void
-  hoge: () => void
 }
 
 export type GameProps = StateProps & DispatchProps
@@ -27,6 +27,13 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => {
   let timerID: any
 
   return {
+    handleClickReset: startTime => {
+      if (!startTime) return
+
+      clearInterval(timerID)
+      dispatch(resetGame())
+    },
+
     handleClickCell: startTime => {
       if (!startTime) {
         const currentTime = new Date()
@@ -42,10 +49,6 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => {
       }
 
       console.log('game is starting')
-    },
-
-    hoge: () => {
-      clearInterval(timerID)
     },
   }
 }

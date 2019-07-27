@@ -3,15 +3,16 @@ import styled from 'styled-components'
 
 import { GameProps } from '../containers/Game'
 
-export const Game: React.FC<GameProps> = ({ game, handleClickCell }) => {
+export const Game: React.FC<GameProps> = ({ game, handleClickReset, handleClickCell }) => {
   const rowArray = new Array(game.rows).fill(null)
   const colArray = new Array(game.cols).fill(null)
 
   const onClickCell = React.useCallback(() => handleClickCell(game.startTime), [game.startTime, handleClickCell])
+  const onClickReset = React.useCallback(() => handleClickReset(game.startTime), [game.startTime, handleClickReset])
 
   return (
     <Wrapper>
-      <button>reset</button>
+      <button onClick={onClickReset}>reset</button>
 
       <Grid colSize={game.cols}>
         {rowArray.map((_, i) => (

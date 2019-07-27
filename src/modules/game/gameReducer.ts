@@ -1,5 +1,5 @@
 import { Game } from './gameDomain'
-import { Actions, START_GAME, UPDATE_GAME_SETTING, SET_COUNT } from './gameAction'
+import { Actions, START_GAME, UPDATE_GAME_SETTING, SET_COUNT, RESET_GAME } from './gameAction'
 
 export const initialState: Game = {
   rows: 10,
@@ -29,6 +29,13 @@ export const gameReducer = (state: Game = initialState, action: Actions): Game =
       return {
         ...state,
         elapsedCount: action.payload.elapsedCount,
+      }
+
+    case RESET_GAME:
+      return {
+        ...state,
+        startTime: null,
+        elapsedCount: '0',
       }
 
     default:

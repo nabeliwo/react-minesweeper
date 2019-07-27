@@ -1,6 +1,6 @@
 import { GameSetting } from './gameDomain'
 
-export type Actions = UpdateGameSetting | StartGame | SetCount
+export type Actions = UpdateGameSetting | StartGame | SetCount | ResetGame
 
 export interface UpdateGameSetting {
   type: 'UPDATE_GAME_SETTING'
@@ -20,10 +20,14 @@ export interface SetCount {
     elapsedCount: string
   }
 }
+export interface ResetGame {
+  type: 'RESET_GAME'
+}
 
 export const UPDATE_GAME_SETTING = 'UPDATE_GAME_SETTING'
 export const START_GAME = 'START_GAME'
 export const SET_COUNT = 'SET_COUNT'
+export const RESET_GAME = 'RESET_GAME'
 
 export function updateGameSetting(setting: UpdateGameSetting['payload']['setting']): UpdateGameSetting {
   return {
@@ -41,5 +45,10 @@ export function setCount(elapsedCount: SetCount['payload']['elapsedCount']): Set
   return {
     type: SET_COUNT,
     payload: { elapsedCount },
+  }
+}
+export function resetGame(): ResetGame {
+  return {
+    type: RESET_GAME,
   }
 }
