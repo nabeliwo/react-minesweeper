@@ -1,5 +1,5 @@
-import { Game } from './gameDomain'
-import { Actions, START_GAME, UPDATE_GAME_SETTING, SET_COUNT, RESET_GAME } from './gameAction'
+import { Game, getBombArray } from './gameDomain'
+import { Actions, START_GAME, UPDATE_GAME_SETTING, SET_COUNT, RESET_GAME, SET_MAP } from './gameAction'
 
 export const initialState: Game = {
   rows: 10,
@@ -9,10 +9,20 @@ export const initialState: Game = {
   moves: 0,
   startTime: null,
   elapsedCount: '0',
+  bombArray: [],
 }
 
 export const gameReducer = (state: Game = initialState, action: Actions): Game => {
   switch (action.type) {
+    case SET_MAP: {
+      const { rows, cols, bombs } = action.payload.setting
+
+      return {
+        ...state,
+        bombArray: getBombArray(bombs, rows * cols),
+      }
+    }
+
     case UPDATE_GAME_SETTING:
       return {
         ...state,

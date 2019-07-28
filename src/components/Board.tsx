@@ -1,17 +1,26 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
+import { BoardProps } from '../containers/Board'
 import { Game } from '../containers/Game'
 import { Config } from '../containers/Config'
 
-export const Board: React.FC<{}> = () => (
-  <Wrapper>
-    <Game />
-    <Bottom>
-      <Config />
-    </Bottom>
-  </Wrapper>
-)
+export const Board: React.FC<BoardProps> = ({ gameSetting, setMap }) => {
+  React.useEffect(() => {
+    setMap(gameSetting)
+    // as componentDidMount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  return (
+    <Wrapper>
+      <Game />
+      <Bottom>
+        <Config />
+      </Bottom>
+    </Wrapper>
+  )
+}
 
 const Wrapper = styled.div`
   display: flex;
