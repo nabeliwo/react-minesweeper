@@ -2,6 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import { ConfigProps } from '../containers/Config'
+import { SettingForm } from '../modules/settingForm/settingFormDomain'
 
 interface FormSubmitEvent {
   preventDefault: () => void
@@ -13,8 +14,13 @@ interface InputChangeEvent {
   }
 }
 
-export const Config: React.FC<ConfigProps> = ({ settingForm, handleSubmit, handleChange }) => {
+interface Props extends ConfigProps {
+  handleSubmit: (value: SettingForm['value']) => void
+}
+
+export const Config: React.FC<Props> = ({ settingForm, handleSubmit, handleChange }) => {
   const { value, errors } = settingForm
+
   const onSubmit = React.useCallback(
     (e: FormSubmitEvent) => {
       e.preventDefault()

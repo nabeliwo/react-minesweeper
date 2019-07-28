@@ -1,5 +1,5 @@
 import { Game, getBombArray } from './gameDomain'
-import { Actions, START_GAME, UPDATE_GAME_SETTING, SET_COUNT, RESET_GAME, SET_MAP } from './gameAction'
+import { Actions, START_TIMER, UPDATE_GAME_SETTING, SET_COUNT, RESET_GAME, SET_MAP } from './gameAction'
 
 export const initialState: Game = {
   rows: 10,
@@ -29,7 +29,7 @@ export const gameReducer = (state: Game = initialState, action: Actions): Game =
         ...action.payload.setting,
       }
 
-    case START_GAME:
+    case START_TIMER:
       return {
         ...state,
         startTime: action.payload.startTime,

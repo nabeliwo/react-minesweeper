@@ -5,18 +5,18 @@ import { BoardProps } from '../containers/Board'
 import { Game } from '../containers/Game'
 import { Config } from '../containers/Config'
 
-export const Board: React.FC<BoardProps> = ({ gameSetting, setMap }) => {
+export const Board: React.FC<BoardProps> = ({ gameSetting, init, startTimer, handleClickReset, handleSubmitConfig }) => {
   React.useEffect(() => {
-    setMap(gameSetting)
+    init(gameSetting)
     // as componentDidMount
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
     <Wrapper>
-      <Game />
+      <Game startTimer={startTimer} handleClickReset={handleClickReset} />
       <Bottom>
-        <Config />
+        <Config handleSubmit={handleSubmitConfig} />
       </Bottom>
     </Wrapper>
   )

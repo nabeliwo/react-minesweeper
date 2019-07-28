@@ -13,19 +13,19 @@ export const settingFormValidator = (value: SettingForm['value']): ValidationRes
   const bombs = Number(value.bombs)
   const errors: string[] = []
 
-  if (!Number.isInteger(rows) || rows <= 0) errors.push('rows には0以上の数値を入力してください。')
-  if (!Number.isInteger(cols) || cols <= 0) errors.push('cols には0以上の数値を入力してください。')
-  if (!Number.isInteger(bombs) || bombs <= 0) errors.push('bombs には0以上の数値を入力してください。')
+  if (!Number.isInteger(rows) || rows <= 0) errors.push('Enter a numeric value of 0 or more for "rows".')
+  if (!Number.isInteger(cols) || cols <= 0) errors.push('Enter a numeric value of 0 or more for "cols".')
+  if (!Number.isInteger(bombs) || bombs <= 0) errors.push('Enter a numeric value of 0 or more for "bombs"')
 
   if (Number.isInteger(rows) && Number.isInteger(cols)) {
     const cellSize = rows * cols
 
     if (cellSize > MAX_CELL_SIZE) {
-      errors.push(`マスの数が${MAX_CELL_SIZE}未満になるように入力してください。現在のマスの数は${cellSize}です。`)
+      errors.push(`Enter so that the number of cells is less than ${MAX_CELL_SIZE}. The current number of cells is ${cellSize}`)
     }
 
     if (Number.isInteger(bombs) && cellSize <= bombs) {
-      errors.push('爆弾の数はマスの数より少なくしてください。')
+      errors.push('Enter the number of bombs to be less than the number of cells.')
     }
   }
 

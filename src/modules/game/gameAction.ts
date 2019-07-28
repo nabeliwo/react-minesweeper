@@ -1,6 +1,6 @@
 import { GameSetting } from './gameDomain'
 
-export type Actions = SetMap | UpdateGameSetting | StartGame | SetCount | ResetGame
+export type Actions = SetMap | UpdateGameSetting | StartTimer | SetCount | ResetGame
 
 export interface SetMap {
   type: 'SET_MAP'
@@ -14,8 +14,8 @@ export interface UpdateGameSetting {
     setting: GameSetting
   }
 }
-export interface StartGame {
-  type: 'START_GAME'
+export interface StartTimer {
+  type: 'START_TIMER'
   payload: {
     startTime: Date
   }
@@ -32,7 +32,7 @@ export interface ResetGame {
 
 export const SET_MAP = 'SET_MAP'
 export const UPDATE_GAME_SETTING = 'UPDATE_GAME_SETTING'
-export const START_GAME = 'START_GAME'
+export const START_TIMER = 'START_TIMER'
 export const SET_COUNT = 'SET_COUNT'
 export const RESET_GAME = 'RESET_GAME'
 
@@ -48,9 +48,9 @@ export function updateGameSetting(setting: UpdateGameSetting['payload']['setting
     payload: { setting },
   }
 }
-export function startGame(startTime: StartGame['payload']['startTime']): StartGame {
+export function startTimer(startTime: StartTimer['payload']['startTime']): StartTimer {
   return {
-    type: START_GAME,
+    type: START_TIMER,
     payload: { startTime },
   }
 }

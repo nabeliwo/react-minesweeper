@@ -2,13 +2,22 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import { GameProps } from '../containers/Game'
+import { Game as IGame } from '../modules/game/gameDomain'
 
-export const Game: React.FC<GameProps> = ({ game, handleClickReset, handleClickCell }) => {
+interface Props extends GameProps {
+  startTimer: () => void
+  handleClickReset: (startTime: IGame['startTime']) => void
+}
+
+export const Game: React.FC<Props> = ({ game, handleClickReset, handleClickCell, startTimer }) => {
   const rowArray = new Array(game.rows).fill(null)
   const colArray = new Array(game.cols).fill(null)
 
-  const onClickCell = React.useCallback(() => handleClickCell(game.startTime), [game.startTime, handleClickCell])
   const onClickReset = React.useCallback(() => handleClickReset(game.startTime), [game.startTime, handleClickReset])
+  const onClickCell = React.useCallback(() => {
+    if (!game.startTime) startTimer()
+    handleClickCell()
+  }, [game.startTime, handleClickCell, startTimer])
 
   return (
     <Wrapper>
