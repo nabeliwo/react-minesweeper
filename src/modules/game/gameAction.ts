@@ -1,12 +1,15 @@
 import { GameSetting } from './gameDomain'
 
-export type Actions = SetMap | UpdateGameSetting | StartTimer | SetCount | ResetGame
+export type Actions = SetMap | IncreaseMove | UpdateGameSetting | StartTimer | SetCount | ResetGame
 
 export interface SetMap {
   type: 'SET_MAP'
   payload: {
     setting: GameSetting
   }
+}
+export interface IncreaseMove {
+  type: 'INCREASE_MOVE'
 }
 export interface UpdateGameSetting {
   type: 'UPDATE_GAME_SETTING'
@@ -31,6 +34,7 @@ export interface ResetGame {
 }
 
 export const SET_MAP = 'SET_MAP'
+export const INCREASE_MOVE = 'INCREASE_MOVE'
 export const UPDATE_GAME_SETTING = 'UPDATE_GAME_SETTING'
 export const START_TIMER = 'START_TIMER'
 export const SET_COUNT = 'SET_COUNT'
@@ -40,6 +44,11 @@ export function setMap(setting: SetMap['payload']['setting']): SetMap {
   return {
     type: SET_MAP,
     payload: { setting },
+  }
+}
+export function increaseMove(): IncreaseMove {
+  return {
+    type: INCREASE_MOVE,
   }
 }
 export function updateGameSetting(setting: UpdateGameSetting['payload']['setting']): UpdateGameSetting {

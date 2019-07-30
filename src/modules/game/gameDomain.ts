@@ -47,3 +47,9 @@ function shuffleArray<T>(original: T[]): T[] {
 
   return array
 }
+
+export function isBomb(position: { x: number; y: number }, bombArray: boolean[]) {
+  const { x, y } = position
+  const index = y * 10 + x
+  return bombArray[index] || false
+}

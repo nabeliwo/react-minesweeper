@@ -2,7 +2,8 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import { GameProps } from '../containers/Game'
-import { Game as IGame } from '../modules/game/gameDomain'
+import { Game as IGame, isBomb } from '../modules/game/gameDomain'
+import { Cell } from './Cell'
 
 interface Props extends GameProps {
   startTimer: () => void
@@ -26,9 +27,13 @@ export const Game: React.FC<Props> = ({ game, handleClickReset, handleClickCell,
       <Grid colSize={game.cols}>
         {rowArray.map((_, i) => (
           <div key={i}>
-            {colArray.map((__, j) => (
-              <Column key={j} onClick={onClickCell} />
-            ))}
+            {colArray.map((__, j) => {
+              return (
+                <Column key={j} onClick={onClickCell}>
+                  <Cell x={j + 1} y={i + 1} isBomb={isBomb({ x: j, y: i }, game.bombArray)} />
+                </Column>
+              )
+            })}
           </div>
         ))}
       </Grid>
@@ -64,14 +69,9 @@ const Grid = styled.div`
   width: ${({ colSize }: { colSize: number }) => (BUTTON_WIDTH + BUTTON_MARGIN * 2) * colSize}px;
   margin: 10px 0;
 `
-const Column = styled.button`
-  width: 20px;
-  height: 20px;
+const Column = styled.div`
+  display: inline-block;
   margin: 5px;
-  padding: 0;
-  border: none;
-  background-color: #f4f4f4;
-  cursor: pointer;
 `
 const Setting = styled.div`
   display: flex;

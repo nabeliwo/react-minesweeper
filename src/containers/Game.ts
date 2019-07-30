@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 
 import { State } from '../store/reducer'
-import { Actions } from '../modules/game/gameAction'
+import { Actions, increaseMove } from '../modules/game/gameAction'
 
 import { Game as GameComponent } from '../components/Game'
 
@@ -22,8 +22,7 @@ const mapStateToProps = (state: State): StateProps => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => ({
   handleClickCell: () => {
-    console.log('click cell')
-    console.log(dispatch)
+    dispatch(increaseMove())
   },
 })
 
