@@ -50,6 +50,8 @@ export const gameReducer = (state: Game = initialState, action: Actions): Game =
     case RESET_GAME:
       return {
         ...state,
+        flags: 0,
+        moves: 0,
         startTime: null,
         elapsedCount: '0',
       }

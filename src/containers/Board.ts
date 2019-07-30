@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 
 import { State } from '../store/reducer'
-import { GameSetting, getElapsedCount, Game } from '../modules/game/gameDomain'
+import { GameSetting, getElapsedCount } from '../modules/game/gameDomain'
 import { SettingForm } from '../modules/settingForm/settingFormDomain'
 import { settingFormValidator } from '../modules/settingForm/settingFormValidator'
 import { Actions as GameActions, setMap, updateGameSetting, startTimer, setCount, resetGame } from '../modules/game/gameAction'
@@ -21,7 +21,7 @@ interface StateProps {
 interface DispatchProps {
   init: (gameSetting: GameSetting) => void
   startTimer: () => void
-  handleClickReset: (startTime: Game['startTime']) => void
+  handleClickReset: (gameSetting: GameSetting) => void
   handleSubmitConfig: (settingFormValue: SettingForm['value']) => void
 }
 
@@ -39,6 +39,8 @@ const mapDispatchToProps = (dispatch: Dispatch<GameActions | SettingFormActions>
   const TIMER_RATE = 100
   let timerID: any
 
+  console.log(TIMER_RATE, getElapsedCount, setCount)
+
   return {
     init: (gameSetting: GameSetting) => {
       dispatch(setMap(gameSetting))
@@ -49,17 +51,16 @@ const mapDispatchToProps = (dispatch: Dispatch<GameActions | SettingFormActions>
 
       dispatch(startTimer(currentTime))
 
-      timerID = setInterval(() => {
-        const elapsedCount = getElapsedCount(currentTime)
-        dispatch(setCount(elapsedCount))
-      }, TIMER_RATE)
+      // timerID = setInterval(() => {
+      //   const elapsedCount = getElapsedCount(currentTime)
+      //   dispatch(setCount(elapsedCount))
+      // }, TIMER_RATE)
     },
 
-    handleClickReset: startTime => {
-      if (!startTime) return
-
+    handleClickReset: gameSetting => {
       clearInterval(timerID)
       dispatch(resetGame())
+      dispatch(setMap(gameSetting))
     },
 
     handleSubmitConfig: (settingFormValue: SettingForm['value']) => {
