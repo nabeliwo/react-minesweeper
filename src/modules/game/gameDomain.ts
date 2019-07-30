@@ -48,8 +48,32 @@ function shuffleArray<T>(original: T[]): T[] {
   return array
 }
 
-export function isBomb(position: { x: number; y: number }, bombArray: boolean[]) {
+function getPosToIndexFunc(cols: number) {
+  return function(x: number, y: number) {
+    if (x >= cols || x < 0) return -1
+    if (y >= cols || y < 0) return -1
+    return cols * y + x
+  }
+}
+
+export function isBomb(bombArray: boolean[], cols: number, position: { x: number; y: number }) {
   const { x, y } = position
-  const index = y * 10 + x
+  const index = getPosToIndexFunc(cols)(x, y)
   return bombArray[index] || false
+}
+
+export function getNearbyBombs(bombArray: boolean[], cols: number, position: { x: number; y: number }) {
+  const { x, y } = position
+  const posToIndex = getPosToIndexFunc(cols)
+  const neighbors = [
+    [x, y - 1],
+    [x, y + 1],
+    [x - 1, y - 1],
+    [x - 1, y],
+    [x - 1, y + 1],
+    [x + 1, y - 1],
+    [x + 1, y],
+    [x + 1, y + 1],
+  ]
+  return neighbors.map(xy => posToIndex(xy[0], xy[1])).filter(index => bombArray[index] || false).length
 }

@@ -5,11 +5,11 @@ interface Props {
   x: number
   y: number
   isBomb: boolean
-  // neighbors: Array<[number, number]>
+  nearbyBombs: number
 }
 
-export const Cell: React.FC<Props> = ({ x, y, isBomb }) => {
-  return <Wrapper onClick={() => console.log(x, y, isBomb)}>{isBomb && '💣'}</Wrapper>
+export const Cell: React.FC<Props> = ({ x, y, isBomb, nearbyBombs }) => {
+  return <Wrapper onClick={() => console.log(x, y, isBomb)}>{isBomb ? '💣' : nearbyBombs}</Wrapper>
 }
 
 const Wrapper = styled.button`

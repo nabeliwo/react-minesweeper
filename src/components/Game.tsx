@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import { GameProps } from '../containers/Game'
-import { isBomb, GameSetting } from '../modules/game/gameDomain'
+import { isBomb, GameSetting, getNearbyBombs } from '../modules/game/gameDomain'
 import { Cell } from './Cell'
 
 interface Props extends GameProps {
@@ -36,9 +36,16 @@ export const Game: React.FC<Props> = ({ game, handleClickReset, handleClickCell,
         {rowArray.map((_, i) => (
           <div key={i}>
             {colArray.map((__, j) => {
+              const position = { x: j, y: i }
+
               return (
                 <Column key={j} onClick={onClickCell}>
-                  <Cell x={j + 1} y={i + 1} isBomb={isBomb({ x: j, y: i }, game.bombArray)} />
+                  <Cell
+                    x={j + 1}
+                    y={i + 1}
+                    isBomb={isBomb(game.bombArray, game.cols, position)}
+                    nearbyBombs={getNearbyBombs(game.bombArray, game.cols, position)}
+                  />
                 </Column>
               )
             })}
