@@ -1,101 +1,66 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-import { GameProps } from '../containers/Game'
-import { isBomb, GameSetting, getNearbyBombs } from '../modules/game/gameDomain'
-import { Cell } from './Cell'
+import { GameProps } from '../modules/game/gameAdapter'
+import { Field } from '../modules/field/fieldAdapter'
+import { Config } from '../modules/config/configAdapter'
+import { Progress } from './Progress'
 
-interface Props extends GameProps {
-  startTimer: () => void
-  handleClickReset: (gameSetting: GameSetting) => void
-}
-
-export const Game: React.FC<Props> = ({ game, handleClickReset, handleClickCell, startTimer }) => {
-  const rowArray = new Array(game.rows).fill(null)
-  const colArray = new Array(game.cols).fill(null)
-
+export const Game: React.FC<GameProps> = ({
+  fieldSetting,
+  game,
+  initializeGame,
+  startTimer,
+  handleClickReset,
+  handleSubmitConfig,
+}) => {
   const onClickReset = React.useCallback(() => {
-    const gameSetting = {
-      rows: game.rows,
-      cols: game.cols,
-      bombs: game.bombs,
-    }
-    handleClickReset(gameSetting)
-  }, [game.bombs, game.cols, game.rows, handleClickReset])
+    handleClickReset(fieldSetting)
+  }, [fieldSetting, handleClickReset])
 
-  const onClickCell = React.useCallback(() => {
-    if (!game.startTime) startTimer()
-    handleClickCell()
-  }, [game.startTime, handleClickCell, startTimer])
+  React.useEffect(() => {
+    initializeGame(fieldSetting)
+    // as componentDidMount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Wrapper>
-      <button onClick={onClickReset}>reset</button>
-
-      <Grid colSize={game.cols}>
-        {rowArray.map((_, i) => (
-          <div key={i}>
-            {colArray.map((__, j) => {
-              const position = { x: j, y: i }
-
-              return (
-                <Column key={j} onClick={onClickCell}>
-                  <Cell
-                    x={j + 1}
-                    y={i + 1}
-                    isBomb={isBomb(game.bombArray, game.cols, position)}
-                    nearbyBombs={getNearbyBombs(game.bombArray, game.cols, position)}
-                  />
-                </Column>
-              )
-            })}
-          </div>
-        ))}
-      </Grid>
-
-      <Setting>
-        <SettingColumn>
-          <Text>
-            {game.flags}/{game.bombs}
-          </Text>
-          <Text>bombs</Text>
-        </SettingColumn>
-        <SettingColumn>
-          <Text>{game.moves}</Text>
-          <Text>moves</Text>
-        </SettingColumn>
-        <SettingColumn>
-          <Text>{game.elapsedCount}</Text>
-          <Text>time</Text>
-        </SettingColumn>
-      </Setting>
+      <Main>
+        <button onClick={onClickReset}>reset</button>
+        <FieldWrapper>
+          <Field startTimer={startTimer} />
+        </FieldWrapper>
+        <Progress bombs={fieldSetting.bombs} flags={game.flags} moves={game.moves} elapsedCount={game.elapsedCount} />
+      </Main>
+      <Bottom>
+        <Config handleSubmit={handleSubmitConfig} />
+      </Bottom>
+      <Description>
+        <p>minesweeper built with React.</p>
+        <p>PC only.</p>
+      </Description>
     </Wrapper>
   )
 }
 
-const BUTTON_WIDTH = 20
-const BUTTON_MARGIN = 5
-
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding-top: 20px;
+`
+const Main = styled.div`
   padding: 20px;
   border: 1px solid #222;
 `
-const Grid = styled.div`
-  width: ${({ colSize }: { colSize: number }) => (BUTTON_WIDTH + BUTTON_MARGIN * 2) * colSize}px;
-  margin: 10px 0;
+const FieldWrapper = styled.div`
+  padding: 10px 0;
 `
-const Column = styled.div`
-  display: inline-block;
-  margin: 5px;
+const Bottom = styled.div`
+  margin-top: 20px;
 `
-const Setting = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
-const SettingColumn = styled.div`
+const Description = styled.div`
   text-align: center;
-`
-const Text = styled.p`
-  margin: 0;
 `

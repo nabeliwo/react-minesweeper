@@ -1,76 +1,39 @@
-import { GameSetting } from './gameDomain'
-
-export type Actions = SetMap | IncreaseMove | UpdateGameSetting | StartTimer | SetCount | ResetGame
-
-export interface SetMap {
-  type: 'SET_MAP'
-  payload: {
-    setting: GameSetting
-  }
-}
-export interface IncreaseMove {
-  type: 'INCREASE_MOVE'
-}
-export interface UpdateGameSetting {
-  type: 'UPDATE_GAME_SETTING'
-  payload: {
-    setting: GameSetting
-  }
-}
-export interface StartTimer {
-  type: 'START_TIMER'
-  payload: {
-    startTime: Date
-  }
-}
-export interface SetCount {
-  type: 'SET_COUNT'
-  payload: {
-    elapsedCount: string
-  }
-}
-export interface ResetGame {
-  type: 'RESET_GAME'
-}
-
-export const SET_MAP = 'SET_MAP'
-export const INCREASE_MOVE = 'INCREASE_MOVE'
-export const UPDATE_GAME_SETTING = 'UPDATE_GAME_SETTING'
 export const START_TIMER = 'START_TIMER'
 export const SET_COUNT = 'SET_COUNT'
 export const RESET_GAME = 'RESET_GAME'
 
-export function setMap(setting: SetMap['payload']['setting']): SetMap {
-  return {
-    type: SET_MAP,
-    payload: { setting },
+export interface StartTimerAction {
+  type: typeof START_TIMER
+  payload: {
+    startTime: Date
   }
 }
-export function increaseMove(): IncreaseMove {
-  return {
-    type: INCREASE_MOVE,
+export interface SetCountAction {
+  type: typeof SET_COUNT
+  payload: {
+    elapsedCount: string
   }
 }
-export function updateGameSetting(setting: UpdateGameSetting['payload']['setting']): UpdateGameSetting {
-  return {
-    type: UPDATE_GAME_SETTING,
-    payload: { setting },
-  }
+export interface ResetGameAction {
+  type: typeof RESET_GAME
 }
-export function startTimer(startTime: StartTimer['payload']['startTime']): StartTimer {
+
+export function startTimer(startTime: StartTimerAction['payload']['startTime']): StartTimerAction {
   return {
     type: START_TIMER,
     payload: { startTime },
   }
 }
-export function setCount(elapsedCount: SetCount['payload']['elapsedCount']): SetCount {
+export function setCount(elapsedCount: SetCountAction['payload']['elapsedCount']): SetCountAction {
   return {
     type: SET_COUNT,
     payload: { elapsedCount },
   }
 }
-export function resetGame(): ResetGame {
+export function resetGame(): ResetGameAction {
   return {
     type: RESET_GAME,
   }
 }
+
+export type GameActionTypes = StartTimerAction | SetCountAction | ResetGameAction

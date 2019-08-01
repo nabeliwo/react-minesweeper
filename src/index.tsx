@@ -1,13 +1,26 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
 
-import { App } from './App'
+import { configureStore } from './store/configureStore'
+import { Game } from './modules/game/gameAdapter'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+const store = configureStore({})
+
+const render = (GameComponent: typeof Game) => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <GameComponent />
+    </Provider>,
+    document.getElementById('root'),
+  )
+}
+
+render(Game)
 
 if (module.hot) {
-  module.hot.accept('./App', () => {
-    const { App: NewApp } = require('./App')
-    ReactDOM.render(<NewApp />, document.getElementById('root'))
+  module.hot.accept('./modules/game/gameAdapter', () => {
+    const { Game: GameComponent }: { Game: typeof Game } = require('./modules/game/gameAdapter')
+    render(GameComponent)
   })
 }

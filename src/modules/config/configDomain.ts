@@ -1,4 +1,13 @@
-import { SettingForm } from './settingFormDomain'
+export type ConfigKey = 'cols' | 'rows' | 'bombs'
+
+export interface Config {
+  value: {
+    cols: string
+    rows: string
+    bombs: string
+  }
+  errors: string[]
+}
 
 interface ValidationResponse {
   valid: boolean
@@ -7,7 +16,7 @@ interface ValidationResponse {
 
 const MAX_CELL_SIZE = 2500
 
-export const settingFormValidator = (value: SettingForm['value']): ValidationResponse => {
+export const configValidator = (value: Config['value']): ValidationResponse => {
   const rows = Number(value.rows)
   const cols = Number(value.cols)
   const bombs = Number(value.bombs)

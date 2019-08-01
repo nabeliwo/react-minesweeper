@@ -6,10 +6,21 @@ interface Props {
   y: number
   isBomb: boolean
   nearbyBombs: number
+  onClick: (position: { x: number; y: number }, isBomb: boolean) => void
 }
 
-export const Cell: React.FC<Props> = ({ x, y, isBomb, nearbyBombs }) => {
-  return <Wrapper onClick={() => console.log(x, y, isBomb)}>{isBomb ? '💣' : nearbyBombs}</Wrapper>
+export const Cell: React.FC<Props> = ({ x, y, isBomb, nearbyBombs, onClick }) => {
+  const handleClick = React.useCallback(() => {
+    onClick({ x, y }, isBomb)
+  }, [isBomb, onClick, x, y])
+
+  console.log(nearbyBombs)
+
+  return (
+    <Wrapper onClick={handleClick} onContextMenu={() => {}}>
+      {isBomb ? '💣' : nearbyBombs}
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.button`
