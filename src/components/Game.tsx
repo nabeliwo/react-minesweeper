@@ -10,7 +10,7 @@ export const Game: React.FC<GameProps> = ({
   fieldSetting,
   game,
   initializeGame,
-  startTimer,
+  checkTimer,
   handleClickReset,
   handleSubmitConfig,
 }) => {
@@ -29,7 +29,7 @@ export const Game: React.FC<GameProps> = ({
       <Main>
         <button onClick={onClickReset}>reset</button>
         <FieldWrapper>
-          <Field startTimer={startTimer} />
+          <Field checkTimer={checkTimer} />
         </FieldWrapper>
         <Progress bombs={fieldSetting.bombs} flags={game.flags} moves={game.moves} elapsedCount={game.elapsedCount} />
       </Main>

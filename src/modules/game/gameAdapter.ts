@@ -18,7 +18,7 @@ interface StateProps {
 
 interface DispatchProps {
   initializeGame: (fieldSetting: FieldSetting) => void
-  startTimer: (startTime: IGame['startTime']) => void
+  checkTimer: (startTime: IGame['startTime'], gameOver: boolean) => void
   handleClickReset: (fieldSetting: FieldSetting) => void
   handleSubmitConfig: (config: Config['value']) => void
 }
@@ -45,7 +45,12 @@ const fieldDispatchToProps = (dispatch: Dispatch<FieldActionTypes | ConfigAction
       dispatch(setField(fieldSetting))
     },
 
-    startTimer: startTime => {
+    checkTimer: (startTime, gameOver) => {
+      if (gameOver) {
+        clearInterval(timerID)
+        return
+      }
+
       if (startTime) return
 
       // const currentTime = new Date()

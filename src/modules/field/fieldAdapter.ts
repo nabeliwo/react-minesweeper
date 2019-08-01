@@ -1,7 +1,9 @@
 import { connect } from 'react-redux'
-// import { Dispatch } from 'redux'
+import { Dispatch } from 'redux'
 
 import { State } from '../../store/reducer'
+import { CellStatus } from './fieldDomain'
+import { FieldActionTypes, changeCellStatus } from './fieldAction'
 
 import { Field as FieldComponent } from '../../components/Field'
 
@@ -11,7 +13,13 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  handleClickCell: (position: { x: number; y: number }, isBomb: boolean) => void
+  handleClickCell: (
+    position: { x: number; y: number },
+    index: number,
+    status: CellStatus,
+    nearbyBombs: number,
+    isBomb: boolean,
+  ) => void
 }
 
 export type FieldProps = StateProps & DispatchProps
@@ -21,10 +29,19 @@ const mapStateToProps = (state: State): StateProps => ({
   startTime: state.game.startTime,
 })
 
-const mapDispatchToProps = (/* dispatch: Dispatch<any> */): DispatchProps => ({
-  handleClickCell: (position, isBomb) => {
-    // dispatch(increaseMove())
-    console.log(position, isBomb)
+const mapDispatchToProps = (dispatch: Dispatch<FieldActionTypes>): DispatchProps => ({
+  handleClickCell: (position, index, status, nearbyBombs, isBomb) => {
+    if (status === CellStatus.Open || status === CellStatus.Flag) return
+
+    if (isBomb) {
+      // game over
+    } else if (nearbyBombs === 0) {
+      // no way...
+    } else {
+      dispatch(changeCellStatus(index, CellStatus.Open))
+    }
+
+    console.log(position, status, nearbyBombs, isBomb)
   },
 })
 

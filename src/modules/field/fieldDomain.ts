@@ -4,7 +4,7 @@ export interface FieldSetting {
   bombs: number
 }
 
-enum CellStatus {
+export enum CellStatus {
   None,
   Flag,
   Open,
@@ -43,23 +43,17 @@ function shuffleArray<T>(original: T[]): T[] {
   return array
 }
 
-function getPosToIndexFunc(cols: number) {
-  return function(x: number, y: number) {
-    if (x >= cols || x < 0) return -1
-    if (y >= cols || y < 0) return -1
-    return cols * y + x
-  }
-}
-
-export function isBomb(bombArray: boolean[], cols: number, position: { x: number; y: number }) {
+export function posToIndex(position: { x: number; y: number }, cols: number) {
   const { x, y } = position
-  const index = getPosToIndexFunc(cols)(x, y)
-  return bombArray[index] || false
+
+  if (x >= cols || x < 0) return -1
+  if (y >= cols || y < 0) return -1
+
+  return cols * y + x
 }
 
 export function getNearbyBombs(bombArray: boolean[], cols: number, position: { x: number; y: number }) {
   const { x, y } = position
-  const posToIndex = getPosToIndexFunc(cols)
   const neighbors = [
     [x, y - 1],
     [x, y + 1],
@@ -70,5 +64,5 @@ export function getNearbyBombs(bombArray: boolean[], cols: number, position: { x
     [x + 1, y],
     [x + 1, y + 1],
   ]
-  return neighbors.map(xy => posToIndex(xy[0], xy[1])).filter(index => bombArray[index] || false).length
+  return neighbors.map(xy => posToIndex({ x: xy[0], y: xy[1] }, cols)).filter(index => bombArray[index] || false).length
 }

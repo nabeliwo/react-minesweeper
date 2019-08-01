@@ -2,25 +2,25 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import { FieldProps } from '../modules/field/fieldAdapter'
-import { isBomb, getNearbyBombs } from '../modules/field/fieldDomain'
+import { getNearbyBombs, posToIndex, CellStatus } from '../modules/field/fieldDomain'
 import { Game } from '../modules/game/gameDomain'
 
 import { Cell } from './Cell'
 
 interface Props extends FieldProps {
-  startTimer: (startTime: Game['startTime']) => void
+  checkTimer: (startTime: Game['startTime'], gameOver: boolean) => void
 }
 
-export const Field: React.FC<Props> = ({ field, startTime, handleClickCell, startTimer }) => {
+export const Field: React.FC<Props> = ({ field, startTime, handleClickCell, checkTimer }) => {
   const rowArray = new Array(field.rows).fill(null)
   const colArray = new Array(field.cols).fill(null)
 
   const onClickCell = React.useCallback(
-    (position: { x: number; y: number }, _isBomb: boolean) => {
-      startTimer(startTime)
-      handleClickCell(position, _isBomb)
+    (position: { x: number; y: number }, index: number, status: CellStatus, nearbyBombs: number, isBomb: boolean) => {
+      checkTimer(startTime, isBomb)
+      handleClickCell(position, index, status, nearbyBombs, isBomb)
     },
-    [handleClickCell, startTime, startTimer],
+    [handleClickCell, startTime, checkTimer],
   )
 
   return (
@@ -29,13 +29,16 @@ export const Field: React.FC<Props> = ({ field, startTime, handleClickCell, star
         <div key={i}>
           {colArray.map((__, j) => {
             const position = { x: j, y: i }
+            const index = posToIndex({ x: j, y: i }, field.cols)
 
             return (
               <Column key={j}>
                 <Cell
                   x={j}
                   y={i}
-                  isBomb={isBomb(field.bombArray, field.cols, position)}
+                  index={index}
+                  status={field.cellStatusArray[index] || 0}
+                  isBomb={field.bombArray[index] || false}
                   nearbyBombs={getNearbyBombs(field.bombArray, field.cols, position)}
                   onClick={onClickCell}
                 />

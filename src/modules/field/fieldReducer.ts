@@ -1,5 +1,5 @@
 import { Field, getBombArray } from './fieldDomain'
-import { FieldActionTypes, SET_FIELD } from './fieldAction'
+import { FieldActionTypes, SET_FIELD, CHANGE_CELL_STATUS } from './fieldAction'
 
 export const initialState: Field = {
   rows: 10,
@@ -22,6 +22,18 @@ export const fieldReducer = (state: Field = initialState, action: FieldActionTyp
         bombs,
         bombArray,
         cellStatusArray,
+      }
+    }
+
+    case CHANGE_CELL_STATUS: {
+      const { index, status } = action.payload
+
+      return {
+        ...state,
+        cellStatusArray: state.cellStatusArray.map((cell, i) => {
+          if (i === index) return status
+          return cell
+        }),
       }
     }
 
