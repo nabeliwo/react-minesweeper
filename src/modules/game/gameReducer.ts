@@ -1,5 +1,5 @@
 import { Game } from './gameDomain'
-import { GameActionTypes, START_TIMER, SET_COUNT, RESET_GAME } from './gameAction'
+import { GameActionTypes, START_TIMER, SET_COUNT, RESET_GAME, INCREASE_MOVE } from './gameAction'
 
 export const initialState: Game = {
   flags: 0,
@@ -24,6 +24,12 @@ export const gameReducer = (state: Game = initialState, action: GameActionTypes)
 
     case RESET_GAME:
       return initialState
+
+    case INCREASE_MOVE:
+      return {
+        ...state,
+        moves: state.moves + 1,
+      }
 
     default:
       return state

@@ -1,6 +1,7 @@
 export const START_TIMER = 'START_TIMER'
 export const SET_COUNT = 'SET_COUNT'
 export const RESET_GAME = 'RESET_GAME'
+export const INCREASE_MOVE = 'INCREASE_MOVE'
 
 export interface StartTimerAction {
   type: typeof START_TIMER
@@ -16,6 +17,9 @@ export interface SetCountAction {
 }
 export interface ResetGameAction {
   type: typeof RESET_GAME
+}
+export interface IncreaseMoveAction {
+  type: typeof INCREASE_MOVE
 }
 
 export function startTimer(startTime: StartTimerAction['payload']['startTime']): StartTimerAction {
@@ -35,5 +39,10 @@ export function resetGame(): ResetGameAction {
     type: RESET_GAME,
   }
 }
+export function increaseMove(): IncreaseMoveAction {
+  return {
+    type: INCREASE_MOVE,
+  }
+}
 
-export type GameActionTypes = StartTimerAction | SetCountAction | ResetGameAction
+export type GameActionTypes = StartTimerAction | SetCountAction | ResetGameAction | IncreaseMoveAction
