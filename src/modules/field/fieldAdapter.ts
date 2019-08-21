@@ -3,7 +3,7 @@ import { Dispatch } from 'redux'
 
 import { State } from '../../store/reducer'
 import { CellStatus } from './fieldDomain'
-import { FieldActionTypes, changeCellStatus } from './fieldAction'
+import { FieldActionTypes, changeCellStatus, openAllCell } from './fieldAction'
 import { GameActionTypes, increaseMove } from '../game/gameAction'
 
 import { Field as FieldComponent } from '../../components/Field'
@@ -36,9 +36,11 @@ const mapDispatchToProps = (dispatch: Dispatch<FieldActionTypes | GameActionType
 
     if (isBomb) {
       // game over
+      dispatch(openAllCell())
     } else if (nearbyBombs === 0) {
+      // expand cell
       dispatch(increaseMove())
-      // no way...
+      // TODO
     } else {
       dispatch(increaseMove())
       dispatch(changeCellStatus(index, CellStatus.Open))

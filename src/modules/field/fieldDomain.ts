@@ -66,3 +66,17 @@ export function getNearbyBombs(bombArray: boolean[], cols: number, position: { x
   ]
   return neighbors.map(xy => posToIndex({ x: xy[0], y: xy[1] }, cols)).filter(index => bombArray[index] || false).length
 }
+
+export function getGameStatusMessage(bombArray: boolean[], cellStatusArray: CellStatus[]) {
+  let message = ''
+
+  if (cellStatusArray.every(status => status !== CellStatus.None)) {
+    if (bombArray.every((isBomb, index) => !isBomb || (isBomb && cellStatusArray[index] === CellStatus.Flag))) {
+      message = 'clear!!'
+    } else {
+      message = 'game over'
+    }
+  }
+
+  return message
+}

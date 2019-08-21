@@ -1,5 +1,5 @@
-import { Field, getBombArray } from './fieldDomain'
-import { FieldActionTypes, SET_FIELD, CHANGE_CELL_STATUS } from './fieldAction'
+import { Field, getBombArray, CellStatus } from './fieldDomain'
+import { FieldActionTypes, SET_FIELD, CHANGE_CELL_STATUS, OPEN_ALL_CELL } from './fieldAction'
 
 export const initialState: Field = {
   rows: 10,
@@ -34,6 +34,13 @@ export const fieldReducer = (state: Field = initialState, action: FieldActionTyp
           if (i === index) return status
           return cell
         }),
+      }
+    }
+
+    case OPEN_ALL_CELL: {
+      return {
+        ...state,
+        cellStatusArray: state.cellStatusArray.map(() => CellStatus.Open),
       }
     }
 

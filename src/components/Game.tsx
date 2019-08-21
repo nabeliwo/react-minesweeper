@@ -9,6 +9,7 @@ import { Progress } from './Progress'
 export const Game: React.FC<GameProps> = ({
   fieldSetting,
   game,
+  message,
   initializeGame,
   checkTimer,
   handleClickReset,
@@ -27,7 +28,10 @@ export const Game: React.FC<GameProps> = ({
   return (
     <Wrapper>
       <Main>
-        <button onClick={onClickReset}>reset</button>
+        <Header>
+          <button onClick={onClickReset}>reset</button>
+          <Result>{message}</Result>
+        </Header>
         <FieldWrapper>
           <Field checkTimer={checkTimer} />
         </FieldWrapper>
@@ -54,6 +58,15 @@ const Wrapper = styled.div`
 const Main = styled.div`
   padding: 20px;
   border: 1px solid #222;
+`
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+const Result = styled.p`
+  min-height: 24px;
+  margin: 0;
 `
 const FieldWrapper = styled.div`
   padding: 10px 0;

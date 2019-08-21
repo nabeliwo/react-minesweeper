@@ -2,6 +2,7 @@ import { FieldSetting, CellStatus } from './fieldDomain'
 
 export const SET_FIELD = 'SET_FIELD'
 export const CHANGE_CELL_STATUS = 'CHANGE_CELL_STATUS'
+export const OPEN_ALL_CELL = 'OPEN_ALL_CELL'
 
 export interface SetFieldAction {
   type: typeof SET_FIELD
@@ -15,6 +16,9 @@ export interface ChangeCellStatusAction {
     index: number
     status: CellStatus
   }
+}
+export interface OpenAllCellAction {
+  type: typeof OPEN_ALL_CELL
 }
 
 export function setField(fieldSetting: SetFieldAction['payload']['fieldSetting']): SetFieldAction {
@@ -32,5 +36,10 @@ export function changeCellStatus(
     payload: { index, status },
   }
 }
+export function openAllCell(): OpenAllCellAction {
+  return {
+    type: OPEN_ALL_CELL,
+  }
+}
 
-export type FieldActionTypes = SetFieldAction | ChangeCellStatusAction
+export type FieldActionTypes = SetFieldAction | ChangeCellStatusAction | OpenAllCellAction
