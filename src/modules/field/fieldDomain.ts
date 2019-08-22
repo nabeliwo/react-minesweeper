@@ -10,6 +10,12 @@ export enum CellStatus {
   Open,
 }
 
+export enum GameStatus {
+  Progress,
+  Clear,
+  GameOver,
+}
+
 export interface Field extends FieldSetting {
   bombArray: boolean[]
   cellStatusArray: CellStatus[]
@@ -43,6 +49,11 @@ function shuffleArray<T>(original: T[]): T[] {
   return array
 }
 
+function getNeighbors(position: { x: number; y: number }) {
+  const { x, y } = position
+  return [[x, y - 1], [x, y + 1], [x - 1, y - 1], [x - 1, y], [x - 1, y + 1], [x + 1, y - 1], [x + 1, y], [x + 1, y + 1]]
+}
+
 export function posToIndex(position: { x: number; y: number }, cols: number) {
   const { x, y } = position
 
@@ -53,30 +64,47 @@ export function posToIndex(position: { x: number; y: number }, cols: number) {
 }
 
 export function getNearbyBombs(bombArray: boolean[], cols: number, position: { x: number; y: number }) {
-  const { x, y } = position
-  const neighbors = [
-    [x, y - 1],
-    [x, y + 1],
-    [x - 1, y - 1],
-    [x - 1, y],
-    [x - 1, y + 1],
-    [x + 1, y - 1],
-    [x + 1, y],
-    [x + 1, y + 1],
-  ]
+  const neighbors = getNeighbors(position)
   return neighbors.map(xy => posToIndex({ x: xy[0], y: xy[1] }, cols)).filter(index => bombArray[index] || false).length
 }
 
-export function getGameStatusMessage(bombArray: boolean[], cellStatusArray: CellStatus[]) {
-  let message = ''
+export function getGameStatus(bombArray: boolean[], cellStatusArray: CellStatus[]) {
+  let gameStatus = GameStatus.Progress
 
   if (cellStatusArray.every(status => status !== CellStatus.None)) {
     if (bombArray.every((isBomb, index) => !isBomb || (isBomb && cellStatusArray[index] === CellStatus.Flag))) {
-      message = 'clear!!'
+      gameStatus = GameStatus.Clear
     } else {
-      message = 'game over'
+      gameStatus = GameStatus.GameOver
     }
   }
 
-  return message
+  return gameStatus
+}
+
+// Destructive function
+export function openNeighborCellsRecursive(
+  position: { x: number; y: number },
+  cellStatusArray: CellStatus[],
+  bombArray: boolean[],
+  cols: number,
+) {
+  const neighbors = getNeighbors(position)
+
+  for (let i = 0; i < neighbors.length; i++) {
+    const index = posToIndex({ x: neighbors[i][0], y: neighbors[i][1] }, cols)
+
+    if (cellStatusArray[index] === CellStatus.None && !bombArray[index]) {
+      const currentPosition = {
+        x: neighbors[i][0],
+        y: neighbors[i][1],
+      }
+
+      cellStatusArray[index] = CellStatus.Open
+
+      if (getNearbyBombs(bombArray, cols, currentPosition) === 0) {
+        openNeighborCellsRecursive(currentPosition, cellStatusArray, bombArray, cols)
+      }
+    }
+  }
 }

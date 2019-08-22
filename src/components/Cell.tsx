@@ -34,11 +34,17 @@ export const Cell: React.FC<Props> = ({ x, y, index, status, isBomb, nearbyBombs
 
   if (status === CellStatus.Flag) value = '🚩'
   if (status === CellStatus.Open) {
-    value = isBomb ? '💣' : `${nearbyBombs}`
+    if (isBomb) {
+      value = '💣'
+    } else if (nearbyBombs === 0) {
+      value = '🐣'
+    } else {
+      value = `${nearbyBombs}`
+    }
   }
 
   return (
-    <Wrapper onClick={handleClick} onContextMenu={handleContextMenu}>
+    <Wrapper onClick={handleClick} onContextMenu={handleContextMenu} className={!value ? 'empty' : ''}>
       {value}
     </Wrapper>
   )
@@ -49,7 +55,10 @@ const Wrapper = styled.button`
   height: 20px;
   padding: 0;
   border: none;
-  background-color: #f4f4f4;
   vertical-align: middle;
   cursor: pointer;
+
+  &.empty {
+    background-color: #f4f4f4;
+  }
 `

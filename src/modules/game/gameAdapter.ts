@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 
 import { State } from '../../store/reducer'
-import { FieldSetting, getGameStatusMessage, CellStatus } from '../field/fieldDomain'
+import { FieldSetting, getGameStatus, CellStatus, GameStatus } from '../field/fieldDomain'
 import { FieldActionTypes, setField } from '../field/fieldAction'
 import { Config, configValidator } from '../config/configDomain'
 import { ConfigActionTypes, setConfigError, resetConfigError } from '../config/configAction'
@@ -15,12 +15,13 @@ interface StateProps {
   fieldSetting: FieldSetting
   game: IGame
   flags: number
-  message: string
+  gameStatus: GameStatus
 }
 
 interface DispatchProps {
   initializeGame: (fieldSetting: FieldSetting) => void
   checkTimer: (startTime: IGame['startTime'], gameOver: boolean) => void
+  updateGameStatus: (gameStatus: GameStatus) => void
   handleClickReset: (fieldSetting: FieldSetting) => void
   handleSubmitConfig: (config: Config['value']) => void
 }
@@ -35,14 +36,12 @@ const fieldStateToProps = ({ field, game }: State): StateProps => ({
   },
   game,
   flags: field.cellStatusArray.filter(status => status === CellStatus.Flag).length,
-  message: getGameStatusMessage(field.bombArray, field.cellStatusArray),
+  gameStatus: getGameStatus(field.bombArray, field.cellStatusArray),
 })
 
 const fieldDispatchToProps = (dispatch: Dispatch<FieldActionTypes | ConfigActionTypes | GameActionTypes>): DispatchProps => {
   const TIMER_RATE = 100
   let timerID: any
-
-  console.log(TIMER_RATE, getElapsedCount, startTimer, setCount)
 
   return {
     initializeGame: (fieldSetting: FieldSetting) => {
@@ -57,14 +56,20 @@ const fieldDispatchToProps = (dispatch: Dispatch<FieldActionTypes | ConfigAction
 
       if (startTime) return
 
-      // const currentTime = new Date()
+      const currentTime = new Date()
 
-      // dispatch(startTimer(currentTime))
+      dispatch(startTimer(currentTime))
 
-      // timerID = setInterval(() => {
-      //   const elapsedCount = getElapsedCount(currentTime)
-      //   dispatch(setCount(elapsedCount))
-      // }, TIMER_RATE)
+      timerID = setInterval(() => {
+        const elapsedCount = getElapsedCount(currentTime)
+        dispatch(setCount(elapsedCount))
+      }, TIMER_RATE)
+    },
+
+    updateGameStatus: gameStatus => {
+      if (gameStatus === GameStatus.Clear && timerID) {
+        clearInterval(timerID)
+      }
     },
 
     handleClickReset: fieldSetting => {

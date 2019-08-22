@@ -5,14 +5,16 @@ import { GameProps } from '../modules/game/gameAdapter'
 import { Field } from '../modules/field/fieldAdapter'
 import { Config } from '../modules/config/configAdapter'
 import { Progress } from './Progress'
+import { GameStatus } from '../modules/field/fieldDomain'
 
 export const Game: React.FC<GameProps> = ({
   fieldSetting,
   game,
   flags,
-  message,
+  gameStatus,
   initializeGame,
   checkTimer,
+  updateGameStatus,
   handleClickReset,
   handleSubmitConfig,
 }) => {
@@ -20,11 +22,30 @@ export const Game: React.FC<GameProps> = ({
     handleClickReset(fieldSetting)
   }, [fieldSetting, handleClickReset])
 
+  let message = ''
+
+  switch (gameStatus) {
+    case GameStatus.Clear:
+      message = 'clear!!'
+      break
+
+    case GameStatus.GameOver:
+      message = 'game over!!'
+      break
+
+    default:
+      break
+  }
+
   React.useEffect(() => {
     initializeGame(fieldSetting)
     // as componentDidMount
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  React.useEffect(() => {
+    updateGameStatus(gameStatus)
+  }, [gameStatus, updateGameStatus])
 
   return (
     <Wrapper>

@@ -1,5 +1,5 @@
-import { Field, getBombArray, CellStatus } from './fieldDomain'
-import { FieldActionTypes, SET_FIELD, CHANGE_CELL_STATUS, OPEN_ALL_CELL } from './fieldAction'
+import { Field, getBombArray, CellStatus, openNeighborCellsRecursive } from './fieldDomain'
+import { FieldActionTypes, SET_FIELD, CHANGE_CELL_STATUS, OPEN_ALL_CELL, OPEN_NEIGHBOR_CELLS } from './fieldAction'
 
 export const initialState: Field = {
   rows: 10,
@@ -41,6 +41,20 @@ export const fieldReducer = (state: Field = initialState, action: FieldActionTyp
       return {
         ...state,
         cellStatusArray: state.cellStatusArray.map(() => CellStatus.Open),
+      }
+    }
+
+    case OPEN_NEIGHBOR_CELLS: {
+      const { cellStatusArray, bombArray, cols } = state
+      const { position } = action.payload
+      const newCellStatusArray = Array.from(cellStatusArray)
+
+      // openNeighborCellsRecursive is destructive function
+      openNeighborCellsRecursive(position, newCellStatusArray, bombArray, cols)
+
+      return {
+        ...state,
+        cellStatusArray: newCellStatusArray,
       }
     }
 

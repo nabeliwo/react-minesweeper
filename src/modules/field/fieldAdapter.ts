@@ -3,7 +3,7 @@ import { Dispatch } from 'redux'
 
 import { State } from '../../store/reducer'
 import { CellStatus } from './fieldDomain'
-import { FieldActionTypes, changeCellStatus, openAllCell } from './fieldAction'
+import { FieldActionTypes, changeCellStatus, openAllCell, openNeighborCells } from './fieldAction'
 import { GameActionTypes, increaseMove } from '../game/gameAction'
 
 import { Field as FieldComponent } from '../../components/Field'
@@ -41,13 +41,12 @@ const mapDispatchToProps = (dispatch: Dispatch<FieldActionTypes | GameActionType
     } else if (nearbyBombs === 0) {
       // expand cell
       dispatch(increaseMove())
-      // TODO
+      dispatch(changeCellStatus(index, CellStatus.Open))
+      dispatch(openNeighborCells(position))
     } else {
       dispatch(increaseMove())
       dispatch(changeCellStatus(index, CellStatus.Open))
     }
-
-    console.log(position, status, nearbyBombs, isBomb)
   },
 
   handleContextMenuCell: (index, status) => {
