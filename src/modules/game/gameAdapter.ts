@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 
 import { State } from '../../store/reducer'
-import { FieldSetting, getGameStatusMessage } from '../field/fieldDomain'
+import { FieldSetting, getGameStatusMessage, CellStatus } from '../field/fieldDomain'
 import { FieldActionTypes, setField } from '../field/fieldAction'
 import { Config, configValidator } from '../config/configDomain'
 import { ConfigActionTypes, setConfigError, resetConfigError } from '../config/configAction'
@@ -14,6 +14,7 @@ import { Game as GameComponent } from '../../components/Game'
 interface StateProps {
   fieldSetting: FieldSetting
   game: IGame
+  flags: number
   message: string
 }
 
@@ -33,6 +34,7 @@ const fieldStateToProps = ({ field, game }: State): StateProps => ({
     bombs: field.bombs,
   },
   game,
+  flags: field.cellStatusArray.filter(status => status === CellStatus.Flag).length,
   message: getGameStatusMessage(field.bombArray, field.cellStatusArray),
 })
 

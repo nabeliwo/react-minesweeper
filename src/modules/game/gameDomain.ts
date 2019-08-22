@@ -1,5 +1,4 @@
 export interface Game {
-  flags: number
   moves: number
   startTime: Date | null
   elapsedCount: string

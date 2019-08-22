@@ -11,7 +11,7 @@ interface Props extends FieldProps {
   checkTimer: (startTime: Game['startTime'], gameOver: boolean) => void
 }
 
-export const Field: React.FC<Props> = ({ field, startTime, handleClickCell, checkTimer }) => {
+export const Field: React.FC<Props> = ({ field, startTime, handleClickCell, handleContextMenuCell, checkTimer }) => {
   const rowArray = new Array(field.rows).fill(null)
   const colArray = new Array(field.cols).fill(null)
 
@@ -41,6 +41,7 @@ export const Field: React.FC<Props> = ({ field, startTime, handleClickCell, chec
                   isBomb={field.bombArray[index] || false}
                   nearbyBombs={getNearbyBombs(field.bombArray, field.cols, position)}
                   onClick={onClickCell}
+                  onContextMenu={handleContextMenuCell}
                 />
               </Column>
             )

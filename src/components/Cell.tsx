@@ -11,12 +11,24 @@ interface Props {
   isBomb: boolean
   nearbyBombs: number
   onClick: (position: { x: number; y: number }, index: number, status: CellStatus, nearbyBombs: number, isBomb: boolean) => void
+  onContextMenu: (index: number, status: CellStatus) => void
 }
 
-export const Cell: React.FC<Props> = ({ x, y, index, status, isBomb, nearbyBombs, onClick }) => {
+interface ContextMenuEvent {
+  preventDefault: () => void
+}
+
+export const Cell: React.FC<Props> = ({ x, y, index, status, isBomb, nearbyBombs, onClick, onContextMenu }) => {
   const handleClick = React.useCallback(() => {
     onClick({ x, y }, index, status, nearbyBombs, isBomb)
   }, [index, isBomb, nearbyBombs, onClick, status, x, y])
+  const handleContextMenu = React.useCallback(
+    (e: ContextMenuEvent) => {
+      e.preventDefault()
+      onContextMenu(index, status)
+    },
+    [index, onContextMenu, status],
+  )
 
   let value = ''
 
@@ -26,7 +38,7 @@ export const Cell: React.FC<Props> = ({ x, y, index, status, isBomb, nearbyBombs
   }
 
   return (
-    <Wrapper onClick={handleClick} onContextMenu={() => {}}>
+    <Wrapper onClick={handleClick} onContextMenu={handleContextMenu}>
       {value}
     </Wrapper>
   )

@@ -2,7 +2,6 @@ import { Game } from './gameDomain'
 import { GameActionTypes, START_TIMER, SET_COUNT, RESET_GAME, INCREASE_MOVE } from './gameAction'
 
 export const initialState: Game = {
-  flags: 0,
   moves: 0,
   startTime: null,
   elapsedCount: '0',

@@ -9,6 +9,7 @@ import { Progress } from './Progress'
 export const Game: React.FC<GameProps> = ({
   fieldSetting,
   game,
+  flags,
   message,
   initializeGame,
   checkTimer,
@@ -35,7 +36,7 @@ export const Game: React.FC<GameProps> = ({
         <FieldWrapper>
           <Field checkTimer={checkTimer} />
         </FieldWrapper>
-        <Progress bombs={fieldSetting.bombs} flags={game.flags} moves={game.moves} elapsedCount={game.elapsedCount} />
+        <Progress bombs={fieldSetting.bombs} flags={flags} moves={game.moves} elapsedCount={game.elapsedCount} />
       </Main>
       <Bottom>
         <Config handleSubmit={handleSubmitConfig} />

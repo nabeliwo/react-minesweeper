@@ -21,6 +21,7 @@ interface DispatchProps {
     nearbyBombs: number,
     isBomb: boolean,
   ) => void
+  handleContextMenuCell: (index: number, status: CellStatus) => void
 }
 
 export type FieldProps = StateProps & DispatchProps
@@ -47,6 +48,11 @@ const mapDispatchToProps = (dispatch: Dispatch<FieldActionTypes | GameActionType
     }
 
     console.log(position, status, nearbyBombs, isBomb)
+  },
+
+  handleContextMenuCell: (index, status) => {
+    if (status === CellStatus.Open) return
+    dispatch(changeCellStatus(index, status === CellStatus.Flag ? CellStatus.None : CellStatus.Flag))
   },
 })
 
