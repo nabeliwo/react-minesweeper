@@ -65,6 +65,11 @@ export const Game: React.FC<GameProps> = ({
       <Description>
         <p>minesweeper built with React.</p>
         <p>PC only.</p>
+        <p>
+          <a href="https://github.com/nabeliwo/react-minesweeper" target="_blank" rel="noopener noreferrer">
+            Github
+          </a>
+        </p>
       </Description>
     </Wrapper>
   )
