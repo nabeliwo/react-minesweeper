@@ -12,13 +12,15 @@ interface Props {
   nearbyBombs: number
   onClick: (position: { x: number; y: number }, index: number, status: CellStatus, nearbyBombs: number, isBomb: boolean) => void
   onContextMenu: (index: number, status: CellStatus) => void
+  bomb: string
+  nonbomb: string
 }
 
 interface ContextMenuEvent {
   preventDefault: () => void
 }
 
-export const Cell: React.FC<Props> = ({ x, y, index, status, isBomb, nearbyBombs, onClick, onContextMenu }) => {
+export const Cell: React.FC<Props> = ({ x, y, index, status, isBomb, nearbyBombs, onClick, onContextMenu, bomb, nonbomb }) => {
   const handleClick = React.useCallback(() => {
     onClick({ x, y }, index, status, nearbyBombs, isBomb)
   }, [index, isBomb, nearbyBombs, onClick, status, x, y])
@@ -35,9 +37,9 @@ export const Cell: React.FC<Props> = ({ x, y, index, status, isBomb, nearbyBombs
   if (status === CellStatus.Flag) value = '🚩'
   if (status === CellStatus.Open) {
     if (isBomb) {
-      value = '💣'
+      value = bomb
     } else if (nearbyBombs === 0) {
-      value = '🐣'
+      value = nonbomb
     } else {
       value = `${nearbyBombs}`
     }
