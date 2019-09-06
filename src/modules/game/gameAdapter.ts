@@ -33,6 +33,8 @@ const fieldStateToProps = ({ field, game }: State): StateProps => ({
     rows: field.rows,
     cols: field.cols,
     bombs: field.bombs,
+    bombEmoji: field.bombEmoji,
+    nonbombEmoji: field.nonbombEmoji,
   },
   game,
   flags: field.cellStatusArray.filter(status => status === CellStatus.Flag).length,
@@ -90,6 +92,8 @@ const fieldDispatchToProps = (dispatch: Dispatch<FieldActionTypes | ConfigAction
         rows: Number(config.rows),
         cols: Number(config.cols),
         bombs: Number(config.bombs),
+        bombEmoji: String(config.bombEmoji),
+        nonbombEmoji: String(config.nonbombEmoji),
       }
 
       clearInterval(timerID)

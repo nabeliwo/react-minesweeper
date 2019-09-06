@@ -5,6 +5,8 @@ export const initialState: Field = {
   rows: 10,
   cols: 10,
   bombs: 10,
+  bombEmoji: '💣',
+  nonbombEmoji: '🐣',
   bombArray: [],
   cellStatusArray: [],
 }
@@ -12,7 +14,7 @@ export const initialState: Field = {
 export const fieldReducer = (state: Field = initialState, action: FieldActionTypes): Field => {
   switch (action.type) {
     case SET_FIELD: {
-      const { rows, cols, bombs } = action.payload.fieldSetting
+      const { rows, cols, bombs, bombEmoji, nonbombEmoji } = action.payload.fieldSetting
       const bombArray = getBombArray(bombs, rows * cols)
       const cellStatusArray = new Array(bombArray.length).fill(0)
 
@@ -20,6 +22,8 @@ export const fieldReducer = (state: Field = initialState, action: FieldActionTyp
         rows,
         cols,
         bombs,
+        bombEmoji,
+        nonbombEmoji,
         bombArray,
         cellStatusArray,
       }

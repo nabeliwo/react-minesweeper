@@ -42,8 +42,8 @@ export const Field: React.FC<Props> = ({ field, startTime, handleClickCell, hand
                   nearbyBombs={getNearbyBombs(field.bombArray, field.cols, position)}
                   onClick={onClickCell}
                   onContextMenu={handleContextMenuCell}
-                  bomb="💩"
-                  nonbomb="🐾"
+                  bombEmoji={field.bombEmoji}
+                  nonbombEmoji={field.nonbombEmoji}
                 />
               </Column>
             )

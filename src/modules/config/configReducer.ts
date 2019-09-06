@@ -7,6 +7,8 @@ const initialState: Config = {
     rows: String(fieldInitialState.rows),
     cols: String(fieldInitialState.cols),
     bombs: String(fieldInitialState.bombs),
+    bombEmoji: String(fieldInitialState.bombEmoji),
+    nonbombEmoji: String(fieldInitialState.nonbombEmoji),
   },
   errors: [],
 }
