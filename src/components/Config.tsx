@@ -18,6 +18,10 @@ interface Props extends ConfigProps {
   handleSubmit: (value: IConfig['value']) => void
 }
 
+interface Emojis {
+  [key: string]: { [key: string]: string }
+}
+
 export const Config: React.FC<Props> = ({ config, handleSubmit, handleChange }) => {
   const { value, errors } = config
 
@@ -28,9 +32,24 @@ export const Config: React.FC<Props> = ({ config, handleSubmit, handleChange }) 
     },
     [handleSubmit, value],
   )
+
+  const emojiSets: Emojis = {
+    '💣🐣': { bombEmoji: '💣', nonbombEmoji: '🐣' },
+    '💩🐾': { bombEmoji: '💩', nonbombEmoji: '🐾' },
+    '🐡🌊': { bombEmoji: '🐡', nonbombEmoji: '🌊' },
+    '🐝🌷': { bombEmoji: '🐝', nonbombEmoji: '🌷' },
+  }
+
   const changeRows = React.useCallback((e: InputChangeEvent) => handleChange('rows', e.currentTarget.value), [handleChange])
   const changeCols = React.useCallback((e: InputChangeEvent) => handleChange('cols', e.currentTarget.value), [handleChange])
   const changeBombs = React.useCallback((e: InputChangeEvent) => handleChange('bombs', e.currentTarget.value), [handleChange])
+  const changeEmoji = React.useCallback(
+    (e: InputChangeEvent) => {
+      handleChange('bombEmoji', emojiSets[e.currentTarget.value].bombEmoji)
+      handleChange('nonbombEmoji', emojiSets[e.currentTarget.value].nonbombEmoji)
+    },
+    [emojiSets, handleChange],
+  )
 
   return (
     <Form onSubmit={onSubmit}>
@@ -50,6 +69,15 @@ export const Config: React.FC<Props> = ({ config, handleSubmit, handleChange }) 
         </li>
         <li>
           bombs: <input type="text" value={value.bombs} onChange={changeBombs} />
+        </li>
+        <li>
+          emoji:{' '}
+          <select name="emoji" onChange={changeEmoji}>
+            <option value="💣🐣">💣🐣</option>
+            <option value="💩🐾">💩🐾</option>
+            <option value="🐡🌊">🐡🌊</option>
+            <option value="🐝🌷">🐝🌷</option>
+          </select>
         </li>
       </List>
 

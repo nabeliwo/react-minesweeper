@@ -2,6 +2,8 @@ export interface FieldSetting {
   rows: number
   cols: number
   bombs: number
+  bombEmoji: string
+  nonbombEmoji: string
 }
 
 export enum CellStatus {

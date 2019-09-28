@@ -1,10 +1,12 @@
-export type ConfigKey = 'cols' | 'rows' | 'bombs'
+export type ConfigKey = 'cols' | 'rows' | 'bombs' | 'bombEmoji' | 'nonbombEmoji'
 
 export interface Config {
   value: {
     cols: string
     rows: string
     bombs: string
+    bombEmoji: string
+    nonbombEmoji: string
   }
   errors: string[]
 }
